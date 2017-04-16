@@ -10,4 +10,15 @@
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8" />
+        <property name="locations">
+            <list>
+                <value>classpath:properties/dubbo.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="classpath:framework/dubbo/dubbo.xml" />
+
 </beans>
