@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop 
+      http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="logTest" class="com.xuyao.aspect.LogTest"></bean>
+
+    <aop:config>  
+         <aop:aspect id="l" ref="logTest"><!--调用日志类 -->  
+         <aop:pointcut id="log" expression="execution(* com.xuyao.controller.*.*(..))"/><!--配置在log包下所有的类在调用之前都会被拦截-->  
+         <aop:before pointcut-ref="log" method="before"/><!--在log包下面所有的类的所有方法被调用之前都调用MyLog中的before方法-->  
+         <aop:after pointcut-ref="log" method="after"/><!--在log包下面所有的类的所有方法被调用之前都调用MyLog中的after方法-->  
+         </aop:aspect>  
+    </aop:config>
+</beans>

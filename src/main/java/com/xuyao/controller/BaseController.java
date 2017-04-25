@@ -30,6 +30,13 @@ public class BaseController {
         return baseService.sayHello(i++);
     }
     
+    @RequestMapping("show1")
+    @ResponseBody
+    public String show1(){
+        //baseService.printInfo();
+        return "i'am going to riding";
+    }
+    
     private static ExecutorService es = Executors.newFixedThreadPool(5);
     
     private static AtomicInteger j = new AtomicInteger();
