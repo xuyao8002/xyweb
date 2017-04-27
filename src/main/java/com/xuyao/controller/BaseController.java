@@ -1,7 +1,9 @@
 package com.xuyao.controller;
 
+import com.xuyao.proxy.LogHandle;
 import com.xuyao.service.BaseService;
 
+import java.lang.reflect.Proxy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,8 +28,11 @@ public class BaseController {
     @RequestMapping("show")
     @ResponseBody
     public String show(){
-        baseService.printInfo();
-        return baseService.sayHello(i++);
+		LogHandle handle = new LogHandle(baseService);
+		BaseService bs = (BaseService) Proxy.newProxyInstance(baseService.getClass().getClassLoader(), baseService.getClass().getInterfaces(), handle);
+		bs.printInfo();
+		bs.sayHello();
+        return bs.sayHello(i++);
     }
     
     private static ExecutorService es = Executors.newFixedThreadPool(5);
@@ -36,16 +41,16 @@ public class BaseController {
     
     public static void main(String[] args){
     	for(int i = 0; i < 1000 ; i++){
-    		es.execute(new Runnable(){
+			es.execute(new Runnable() {
 
 				@Override
 				public void run() {
 					//j++;
 					j.incrementAndGet();
 				}
-    			
-    		});
-    	}
+
+			});
+		}
     	es.shutdown();
     	while(true){
     		if(es.isTerminated()){
