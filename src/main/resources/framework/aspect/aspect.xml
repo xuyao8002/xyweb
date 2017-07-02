@@ -10,8 +10,9 @@
 	<bean id="logTest" class="com.xuyao.aspect.LogTest"></bean>
 
     <aop:config>  
-         <aop:aspect id="l" ref="logTest"><!--调用日志类 -->  
-         <aop:pointcut id="log" expression="execution(* com.xuyao.controller.*.*(..))"/><!--配置在log包下所有的类在调用之前都会被拦截-->  
+         <aop:aspect id="l" ref="logTest"><!--调用日志类 -->
+         <aop:pointcut id="log" expression="@annotation(com.xuyao.annotation.ControllerLog)"/><!--配置加了ControllerLog注解的所有方法在调用之前都会被拦截-->
+         <!--<aop:pointcut id="log" expression="execution(* com.xuyao.controller.*.*(..))"/>--><!--配置在controller包下所有的类在调用之前都会被拦截-->
          <aop:before pointcut-ref="log" method="before"/><!--在log包下面所有的类的所有方法被调用之前都调用MyLog中的before方法-->  
          <aop:after pointcut-ref="log" method="after"/><!--在log包下面所有的类的所有方法被调用之前都调用MyLog中的after方法-->  
          </aop:aspect>  

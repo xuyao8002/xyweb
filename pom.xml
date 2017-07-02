@@ -72,11 +72,11 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjweaver</artifactId>
-		    <version>1.8.9</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.9</version>
 		</dependency>
 
 		<dependency>
@@ -85,6 +85,35 @@
 			<version>2.5</version>
 		</dependency>
 	</dependencies>
+
+
+	<profiles>
+		<profile>
+			<!-- 开发环境 -->
+			<id>dev</id>
+			<properties>
+				<profiles.active>dev</profiles.active>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<!-- 测试环境 -->
+			<id>test</id>
+			<properties>
+				<profiles.active>test</profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<!-- 生产环境 -->
+			<id>pro</id>
+			<properties>
+				<profiles.active>pro</profiles.active>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<finalName>xyweb</finalName>
 		<plugins>
@@ -97,6 +126,38 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>src/main/resources/properties/${profiles.active}</directory>
+							<targetPath>WEB-INF/classes/properties</targetPath>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- 资源根目录排除各环境的配置，防止在生成目录中多余其它目录 -->
+				<excludes>
+					<exclude>properties/test/*</exclude>
+					<exclude>properties/pro/*</exclude>
+					<exclude>properties/dev/*</exclude>
+				</excludes>
+			</resource>
+
+		</resources>
+
 	</build>
+
+
 </project>

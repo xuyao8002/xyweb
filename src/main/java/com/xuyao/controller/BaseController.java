@@ -1,5 +1,6 @@
 package com.xuyao.controller;
 
+import com.xuyao.annotation.ControllerLog;
 import com.xuyao.proxy.LogHandle;
 import com.xuyao.service.BaseService;
 
@@ -27,6 +28,7 @@ public class BaseController {
 
     @RequestMapping("show")
     @ResponseBody
+    @ControllerLog(desc = "show me")
     public String show(){
 		/*LogHandle handle = new LogHandle(baseService);
 		BaseService bs = (BaseService) Proxy.newProxyInstance(baseService.getClass().getClassLoader(), baseService.getClass().getInterfaces(), handle);
@@ -38,36 +40,10 @@ public class BaseController {
     
     @RequestMapping("show1")
     @ResponseBody
+    @ControllerLog(desc = "show me the code")
     public String show1(){
         //baseService.printInfo();
         return "i'am going to riding";
-    }
-
-
-
-    private static ExecutorService es = Executors.newFixedThreadPool(5);
-    
-    private static AtomicInteger j = new AtomicInteger();
-    
-    public static void main(String[] args){
-    	for(int i = 0; i < 1000 ; i++){
-			es.execute(new Runnable() {
-
-				@Override
-				public void run() {
-					//j++;
-					j.incrementAndGet();
-				}
-
-			});
-		}
-    	es.shutdown();
-    	while(true){
-    		if(es.isTerminated()){
-    			System.out.println(j.get());
-    			break;
-    		}
-    	}
     }
 
 }
