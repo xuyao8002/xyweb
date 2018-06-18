@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Created by xuyao on 2017/4/11.
  */
@@ -41,33 +37,6 @@ public class EhCacheController {
         //baseService.printInfo();
         baseService.put(key, value, i, i1);
         return key + ", " + value;//"i'am going to riding";
-    }
-
-
-
-    private static ExecutorService es = Executors.newFixedThreadPool(5);
-    
-    private static AtomicInteger j = new AtomicInteger();
-    
-    public static void main(String[] args){
-    	for(int i = 0; i < 1000 ; i++){
-			es.execute(new Runnable() {
-
-				@Override
-				public void run() {
-					//j++;
-					j.incrementAndGet();
-				}
-
-			});
-		}
-    	es.shutdown();
-    	while(true){
-    		if(es.isTerminated()){
-    			System.out.println(j.get());
-    			break;
-    		}
-    	}
     }
 
 }
