@@ -1,18 +1,15 @@
 package com.xuyao.controller;
 
 import com.xuyao.annotation.ControllerLog;
-import com.xuyao.proxy.LogHandle;
+import com.xuyao.annotation.RateLimit;
 import com.xuyao.service.BaseService;
-
-import java.lang.reflect.Proxy;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+
 
 /**
  * Created by xuyao on 2017/4/11.
@@ -40,10 +37,20 @@ public class BaseController {
     
     @RequestMapping("show1")
     @ResponseBody
-    @ControllerLog(desc = "show me the code")
+    @RateLimit(permitsPerSecond = 5)
+//    @ControllerLog(desc = "show me the code")
     public String show1(){
         //baseService.printInfo();
         return "i'am going to riding";
+    }
+
+    @RequestMapping("show2")
+    @ResponseBody
+    @RateLimit(permitsPerSecond = 4, key = "show2")
+//    @ControllerLog(desc = "show me the code")
+    public String show2(){
+        //baseService.printInfo();
+        return "i'am going to shopping";
     }
 
 }
